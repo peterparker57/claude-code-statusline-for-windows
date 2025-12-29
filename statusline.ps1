@@ -196,40 +196,31 @@ try {
 # Get current time
 $currentTime = Get-Date -Format "h:mmtt"
 
-# Build output components
-$components = @()
-
-# Folder
+# Build output - two lines
+# Line 1: Location info (Folder, Git)
+$line1 = @()
 if ($folderName) {
-    $components += "$EMOJI_FOLDER $folderName"
+    $line1 += "$EMOJI_FOLDER $folderName"
 }
-
-# Git (if available)
 if ($gitBranch) {
-    $components += "$EMOJI_BRANCH $gitBranch ($gitStatus)"
+    $line1 += "$EMOJI_BRANCH $gitBranch ($gitStatus)"
 }
 
-# Model
-$components += "$modelIndicator $shortModel"
-
-# Tokens (if available)
+# Line 2: Session info (Model, Tokens, MCP, Duration, Time)
+$line2 = @()
+$line2 += "$modelIndicator $shortModel"
 if ($tokenDisplay) {
-    $components += "$EMOJI_CHART $tokenDisplay"
+    $line2 += "$EMOJI_CHART $tokenDisplay"
 }
-
-# MCP servers (if available)
 if ($mcpCount) {
-    $components += "$EMOJI_PLUG $mcpCount MCP"
+    $line2 += "$EMOJI_PLUG $mcpCount MCP"
 }
-
-# Session duration (if available)
 if ($sessionDisplay) {
-    $components += "$EMOJI_STOPWATCH $sessionDisplay"
+    $line2 += "$EMOJI_STOPWATCH $sessionDisplay"
 }
+$line2 += "$EMOJI_CLOCK $currentTime"
 
-# Time
-$components += "$EMOJI_CLOCK $currentTime"
-
-# Output single line
-$output = $components -join " | "
-Write-Output $output
+# Output two lines
+$output1 = $line1 -join " | "
+$output2 = $line2 -join " | "
+Write-Output "$output1`n$output2"

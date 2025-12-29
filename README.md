@@ -4,21 +4,39 @@ A Windows-native PowerShell statusline for Claude Code that displays real-time s
 
 ## What It Does
 
-Displays a single-line status bar showing:
+Displays a two-line status bar at the bottom of the terminal:
 
 ```
-📁 H:\DevLaptop | 🌿 main (ok) | 🧠 Opus 4.5 | 📊 17.7M | 🔌 4 MCP | ⏱ 19m | 🕐 1:10PM
+📁 H:\DevLaptop\MyProject | 🌿 main (ok)
+🧠 Opus 4.5 | 📊 17.7M | 🔌 4 MCP | ⏱ 19m | 🕐 1:10PM
 ```
 
+**Line 1 - Location Info:**
 | Icon | Component | Description |
 |------|-----------|-------------|
 | 📁 | Folder | Full path of current working directory |
 | 🌿 | Git Branch | Branch name + status (`ok` = clean, `*` = dirty) |
+
+**Line 2 - Session Info:**
+| Icon | Component | Description |
+|------|-----------|-------------|
 | 🧠/🎵/⚡ | Model | Claude model with emoji (Opus/Sonnet/Haiku) |
 | 📊 | Tokens | Today's total token usage (requires ccusage) |
 | 🔌 | MCP | Count of configured MCP servers |
 | ⏱ | Session | Time since statusline first ran |
 | 🕐 | Time | Current time (12-hour AM/PM format) |
+
+### When Git Info Appears
+
+The git branch and status display works for **any local git repository** - the current directory must contain a `.git` folder. This includes:
+
+- Repositories cloned from GitHub, GitLab, Bitbucket, or any remote
+- Locally-created repositories (with or without a remote)
+- Any folder where `git init` has been run
+
+**Important:** If you create a GitHub repository using the GitHub API or web interface (without cloning), the git info won't appear because there's no local `.git` folder. To enable git display, either:
+- Clone the repository locally, or
+- Run `git init` and link to the remote with `git remote add origin <url>`
 
 ## Why This Exists
 
@@ -78,7 +96,7 @@ Claude Code sends JSON to the statusline command via stdin:
 }
 ```
 
-The script outputs a single line of text that Claude Code displays at the bottom of the terminal.
+The script outputs two lines of text that Claude Code displays at the bottom of the terminal.
 
 ### Data Sources
 
